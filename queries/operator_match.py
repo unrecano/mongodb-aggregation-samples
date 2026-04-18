@@ -10,5 +10,3 @@ result = client["sample_airbnb"]["listingsAndReviews"].aggregate(
         {"$limit": 5},
     ]
 )
-
-print(result.to_list())
