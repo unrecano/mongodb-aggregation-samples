@@ -1,3 +1,6 @@
+# Operators Functions
+
+```javascript
 [
   {
     $addFields: {
@@ -31,3 +34,4 @@
     }
   }
 ]
+```
