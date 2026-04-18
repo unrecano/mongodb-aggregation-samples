@@ -1,10 +1,15 @@
-from pymongo import MongoClient
+from typing import List, Dict, Any
+from src.db import get_mongo_client
+import pprint
 
-client = MongoClient(
-    "mongodb://admin:test@localhost:27017/?authSource=admin&readPreference=primary&ssl=false"
-)
-result = client["sample_analytics"]["customers"].aggregate(
-    [
+def run_lookup_aggregation() -> List[Dict[str, Any]]:
+    """
+    Executes an aggregation pipeline using $lookup to join data between customers, accounts, and transactions.
+
+    Returns:
+        List[Dict[str, Any]]: A list of aggregated documents containing the joined data.
+    """
+    pipeline = [
         {
             "$lookup": {
                 "from": "accounts",
@@ -33,4 +38,11 @@ result = client["sample_analytics"]["customers"].aggregate(
         {"$limit": 5},
         {"$project": {"_id": 0, "Name": "$_id", "total": 1}},
     ]
-)
+
+    with get_mongo_client() as client:
+        collection = client["sample_analytics"]["customers"]
+        return list(collection.aggregate(pipeline))
+
+if __name__ == "__main__":
+    results = run_lookup_aggregation()
+    pprint.pprint(results)

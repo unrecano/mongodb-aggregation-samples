@@ -1,10 +1,15 @@
-from pymongo import MongoClient
+from typing import List, Dict, Any
+from src.db import get_mongo_client
+import pprint
 
-client = MongoClient(
-    "mongodb://admin:test@localhost:27017/?authSource=admin&readPreference=primary&ssl=false"
-)
-result = client["sample_airbnb"]["listingsAndReviews"].aggregate(
-    [
+def run_set_aggregation() -> List[Dict[str, Any]]:
+    """
+    Executes an aggregation pipeline using $set to add calculated fields and restructure documents.
+
+    Returns:
+        List[Dict[str, Any]]: A list of aggregated and restructured documents.
+    """
+    pipeline = [
         {"$match": {"address.country_code": "US"}},
         {"$sort": {"property_type": 1, "price": 1}},
         {
@@ -53,4 +58,12 @@ result = client["sample_airbnb"]["listingsAndReviews"].aggregate(
             }
         },
     ]
-)
+
+    with get_mongo_client() as client:
+        collection = client["sample_airbnb"]["listingsAndReviews"]
+        return list(collection.aggregate(pipeline))
+
+if __name__ == "__main__":
+    results = run_set_aggregation()
+    for doc in results:
+        pprint.pprint(doc)

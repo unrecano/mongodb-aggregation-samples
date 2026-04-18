@@ -1,10 +1,15 @@
-from pymongo import MongoClient
+from typing import List, Dict, Any
+from src.db import get_mongo_client
+import pprint
 
-client = MongoClient(
-    "mongodb://admin:test@localhost:27017/?authSource=admin&readPreference=primary&ssl=false"
-)
-result = client["sample_airbnb"]["listingsAndReviews"].aggregate(
-    [
+def run_sum_and_avg_aggregation() -> List[Dict[str, Any]]:
+    """
+    Executes an aggregation pipeline using $sum and $avg to get counts and averages by property type.
+
+    Returns:
+        List[Dict[str, Any]]: A list of aggregated documents with sum and average values.
+    """
+    pipeline = [
         {"$match": {"address.country_code": "US"}},
         {"$sort": {"property_type": 1, "price": 1}},
         {
@@ -27,7 +32,7 @@ result = client["sample_airbnb"]["listingsAndReviews"].aggregate(
         {
             "$project": {
                 "_id": 0,
-                "Proerty Type": "$_id",
+                "Property Type": "$_id",
                 "Cheaper": "$cheaper.price",
                 "Expensive": "$expensive.price",
                 "Count": "$count",
@@ -35,4 +40,12 @@ result = client["sample_airbnb"]["listingsAndReviews"].aggregate(
             }
         },
     ]
-)
+
+    with get_mongo_client() as client:
+        collection = client["sample_airbnb"]["listingsAndReviews"]
+        return list(collection.aggregate(pipeline))
+
+if __name__ == "__main__":
+    results = run_sum_and_avg_aggregation()
+    for doc in results:
+        pprint.pprint(doc)

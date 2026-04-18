@@ -6,29 +6,17 @@ services:
       - 27017:27017
     volumes:
       - type: bind
-        source: ./mongo.yml
+        source: ./local/mongo.yml
         target: /etc/mongod.conf
       - type: volume
         source: mongo_volume
         target: /data/db
       - type: bind
-        source: ./mongo-init.sh
+        source: ./local/mongo-init.sh
         target: /docker-entrypoint-initdb.d/mongo-init.sh
       - type: bind
-        source: ./data/listingsAndReview.json
-        target: /data/listingsAndReview.json
-      - type: bind
-        source: ./data/sales.json
-        target: /data/sales.json
-      - type: bind
-        source: ./data/accounts.json
-        target: /data/accounts.json
-      - type: bind
-        source: ./data/customers.json
-        target: /data/customers.json
-      - type: bind
-        source: ./data/transactions.json
-        target: /data/transactions.json
+        source: ./data
+        target: /data
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: test

@@ -1,10 +1,15 @@
-from pymongo import MongoClient
+from typing import List, Dict, Any
+from src.db import get_mongo_client
+import pprint
 
-client = MongoClient(
-    "mongodb://admin:test@localhost:27017/?authSource=admin&readPreference=primary&ssl=false"
-)
-result = client["sample_airbnb"]["listingsAndReviews"].aggregate(
-    [
+def run_geo_near_aggregation() -> List[Dict[str, Any]]:
+    """
+    Executes an aggregation pipeline using $geoNear to find properties near a specific point.
+
+    Returns:
+        List[Dict[str, Any]]: A list of documents resulting from the aggregation pipeline.
+    """
+    pipeline = [
         {
             "$geoNear": {
                 "near": {
@@ -31,4 +36,11 @@ result = client["sample_airbnb"]["listingsAndReviews"].aggregate(
             }
         },
     ]
-)
+
+    with get_mongo_client() as client:
+        collection = client["sample_airbnb"]["listingsAndReviews"]
+        return list(collection.aggregate(pipeline))
+
+if __name__ == "__main__":
+    results = run_geo_near_aggregation()
+    pprint.pprint(results)
