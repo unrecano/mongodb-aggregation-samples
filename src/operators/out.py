@@ -2,6 +2,7 @@ from typing import List, Dict, Any
 from src.db import get_mongo_client
 import pprint
 
+
 def run_out_aggregation() -> List[Dict[str, Any]]:
     """
     Executes an aggregation pipeline that saves the result into a new collection named 'expensiveProperties'.
@@ -24,7 +25,8 @@ def run_out_aggregation() -> List[Dict[str, Any]]:
         collection = client["sample_airbnb"]["listingsAndReviews"]
         return list(collection.aggregate(pipeline))
 
+
 if __name__ == "__main__":
-    print("Ejecutando agregación y guardando en 'expensiveProperties'...")
     results = run_out_aggregation()
-    print("Operación completada.")
+    for result in results:
+        pprint.pprint(result)

@@ -7,8 +7,9 @@ load_dotenv()
 
 MONGO_URI = os.getenv(
     "MONGO_URI",
-    "mongodb://admin:test@localhost:27017/?authSource=admin&readPreference=primary&ssl=false"
+    "mongodb://admin:test@localhost:27017/?authSource=admin&readPreference=primary&ssl=false",
 )
+
 
 @contextmanager
 def get_mongo_client():

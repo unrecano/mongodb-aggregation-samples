@@ -2,6 +2,7 @@ from typing import List, Dict, Any
 from src.db import get_mongo_client
 import pprint
 
+
 def run_geo_near_aggregation() -> List[Dict[str, Any]]:
     """
     Executes an aggregation pipeline using $geoNear to find properties near a specific point.
@@ -40,6 +41,7 @@ def run_geo_near_aggregation() -> List[Dict[str, Any]]:
     with get_mongo_client() as client:
         collection = client["sample_airbnb"]["listingsAndReviews"]
         return list(collection.aggregate(pipeline))
+
 
 if __name__ == "__main__":
     results = run_geo_near_aggregation()
