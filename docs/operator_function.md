@@ -1,4 +1,4 @@
-# Operators Functions
+# Operator Function
 
 ```javascript
 [
