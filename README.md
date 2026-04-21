@@ -16,12 +16,17 @@ This repository contains the exercises, scripts, and sample data for the **Mongo
 └── src/                    # Source code
     ├── db.py               # MongoDB connection context manager
     └── operators/          # Python scripts demonstrating different aggregation operators
+        ├── accumulator.py
+        ├── bucket.py
+        ├── bucket_auto.py
+        ├── function.py
         ├── geo_near.py
         ├── group.py
         ├── lookup.py
         ├── match.py
         ├── out.py
         ├── project.py
+        ├── redact.py
         ├── set.py
         ├── sum_and_avg.py
         └── unwind.py
