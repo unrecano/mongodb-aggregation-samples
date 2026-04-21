@@ -15,6 +15,7 @@ This repository contains the exercises, scripts, and sample data for the **Mongo
 ├── local/                  # Initialization scripts for the Docker container
 └── src/                    # Source code
     ├── db.py               # MongoDB connection context manager
+    ├── profiling.py        # Aggregation profiling and execution stats
     └── operators/          # Python scripts demonstrating different aggregation operators
         ├── accumulator.py
         ├── bucket.py
@@ -81,6 +82,7 @@ python -m src.operators.match
 python -m src.operators.group
 python -m src.operators.sum_and_avg
 python -m src.operators.unwind
+python -m src.profiling
 ```
 
 Feel free to modify the pipelines inside `src/operators/` to experiment with your own aggregations!
